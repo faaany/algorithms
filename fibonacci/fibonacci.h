@@ -7,4 +7,6 @@
 
 unsigned long fibonacci(unsigned n);
 
+unsigned long fibonacciConst(unsigned n);
+
 #endif //FIBONACCI_FIBONACCI_H
