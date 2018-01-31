@@ -2,6 +2,7 @@
 #include <chrono>
 #include <vector>
 #include <random>
+#include <sstream>
 
 
 using std::cout;
@@ -19,17 +20,23 @@ auto normalGenerator = std::bind(normal, generator);
 void matVec(const Vector& mat, const Vector& vec, Vector& result, unsigned N);
 void initOperands(Vector& mat, Vector& vec, unsigned N);
 
-int main(int nArgs, char** args) {
+int main(int argc, char** args) {
 
-    unsigned N=1000, k=200;
-    if(nArgs>1) N= unsigned(abs(atoi(args[1])));
-    if(nArgs>2) k= unsigned(abs(atoi(args[2])));
+    if (3 != argc) {
+        std::cerr << "usage: " << args[0] << " <dim_matrix> <num_iter>"
+                  << std::endl;
+        return -1;
+    }
 
-//    cout << "Please enter the matrix size N: ";
-//    cin >> N;
-//
-//    cout << "Please enter the number of iterations: ";
-//    cin >> k;
+    unsigned N;
+    unsigned k;
+
+    if (!(std::istringstream(args[1]) >> N) ||
+        !(std::istringstream(args[2]) >> k)) {
+        std::cerr << "arguments are not valid positive integers";
+        return -1;
+    }
+
 
     Vector mat(N*N);
     Vector vec(N);
