@@ -6,5 +6,6 @@
 #define FIBONACCI_FIBONACCI_H
 
 unsigned long fibonacci(unsigned n);
+unsigned long fibonacciLinear(unsigned n);
 
 #endif //FIBONACCI_FIBONACCI_H
