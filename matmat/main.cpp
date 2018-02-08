@@ -4,11 +4,14 @@
 #include <chrono>
 
 using namespace std::chrono;
+using std::cout;
 
 typedef std::vector<double> Vector;
 
 void init_mat(const unsigned m, const unsigned n, const unsigned k, Vector& A, Vector& B, Vector& C);
 
+
+void printMatrix(unsigned m, unsigned k, const Vector& mat_C);
 
 int main() {
 
@@ -24,38 +27,45 @@ int main() {
     Vector mat_C(m*k);
 
     init_mat(m,n,k,mat_A,mat_B,mat_C);
+    //printMatrix(m,k,mat_C);
 
     auto start = high_resolution_clock::now();
     for(unsigned i=0; i<iteration; ++i) {
-        matmat(alpha, false, mat_A.data(), m,n,mat_B.data(),k,beta,mat_C.data());
+        matmat(alpha, false, mat_A.data(), m,n,mat_B.data(),k,beta,mat_C.data(),n,k,k);
     }
     auto stop = high_resolution_clock::now();
 
     double duration = duration_cast<nanoseconds>(stop-start).count()*1e-9/iteration;
 
-    for(unsigned i=0; i<m; ++i) {
-        for(unsigned j=0; j<k; ++j) {
-            std::cout << mat_C[i*m+j] << ", ";
-        }
+    printMatrix(m, k, mat_C);
 
-        std::cout << std::endl;
-    }
-
-    std::cout << "\n" << "The execution time is " << duration<<"s. \n";
+    cout << "\n" << "The execution time is " << duration<<"s. \n";
 
     return 0;
 }
 
+void printMatrix(unsigned m, unsigned k, const Vector& mat_C) {
+    for(unsigned i=0; i < m; ++i) {
+        for(unsigned j=0; j<k; ++j) {
+            cout << mat_C[i*k + j] << ", ";
+        }
+
+        cout << std::__1::endl;
+    }
+}
 
 
 void init_mat(const unsigned m, const unsigned n, const unsigned k, Vector& A, Vector& B, Vector& C) {
-    for (unsigned i = 0; i <m; ++i) {
-        for (unsigned j = 0; j < n; ++j) {
-            if(j == i){
-                A[i*m+j] = 1;
-                B[i*m+j] =2;
-                C[i*m+j] =1;
-            }
-        }
+    unsigned d = std::min(m,n);
+    for (unsigned i = 0; i < d; ++i) {
+        A[i*(n+1)] = 1;
+    }
+    d = std::min(n,k);
+    for (unsigned i = 0; i < d; ++i) {
+        B[i*(k + 1)] = 2;
+    }
+    d= std::min(m,k);
+    for (unsigned i=0; i<d; ++i) {
+        C[i*(k+1)]= 1;
     }
 }

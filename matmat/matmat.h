@@ -6,6 +6,6 @@
 #define MATMAT_MATMAT_H
 
 void matmat(double alpha, bool trans, double const* a, int m, int n,
-            double const* b, int k, double beta, double* c);
+            double const* b, int k, double beta, double* c, int ida, int idb, int idc);
 
 #endif //MATMAT_MATMAT_H
