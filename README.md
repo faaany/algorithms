@@ -1,3 +1,3 @@
 # Algorithms
 
-Some implementations of algorithms at the college 
+Some implementations of algorithms at college 
